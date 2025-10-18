@@ -1,36 +1,41 @@
 class Equipe:
-    # Classe que representa uma equipe no campeonato, armazenando suas estatísticas e informações.
+    """
+    Representa uma equipe no campeonato, armazenando suas estatísticas.
+    """
 
-    def __init__(self, nome):
-        # Inicializa uma nova equipe com o nome fornecido e estatísticas zeradas.
+    def __init__(self, nome: str):
         self.nome = nome
-        self.pontos = 0  # Pontos acumulados pela equipe
-        self.vitorias = 0  # Número de vitórias da equipe
-        self.gols_marcados = 0  # Total de gols marcados pela equipe
-        self.gols_sofridos = 0  # Total de gols sofridos pela equipe
+        self.pontos = 0
+        self.vitorias = 0
+        self.empates = 0
+        self.derrotas = 0
+        self.gols_marcados = 0
+        self.gols_sofridos = 0
 
-    def atualizar_estatisticas(self, gols_marcados, gols_sofridos):
-        # Atualiza as estatísticas da equipe com base no resultado de uma partida.
-        # Verifica se os gols marcados e sofridos são válidos (não negativos).
+    def atualizar_estatisticas(self, gols_marcados: int, gols_sofridos: int):
+        """
+        Atualiza as estatísticas da equipe com base no resultado de uma partida.
+        """
         if gols_marcados < 0 or gols_sofridos < 0:
-            raise ValueError("Gols marcados e sofridos não podem ser negativos.")
+            raise ValueError("Os gols não podem ser negativos.")
 
-        # Atualiza os gols marcados e sofridos.
         self.gols_marcados += gols_marcados
         self.gols_sofridos += gols_sofridos
-        saldo_gols = gols_marcados - gols_sofridos
 
-        # Atualiza os pontos e vitórias com base no saldo de gols.
-        if saldo_gols > 0:
-            self.pontos += 3  # Vitória
+        if gols_marcados > gols_sofridos:
+            self.pontos += 3
             self.vitorias += 1
-        elif saldo_gols == 0:
-            self.pontos += 1  # Empate
+        elif gols_marcados == gols_sofridos:
+            self.pontos += 1
+            self.empates += 1
+        else:
+            self.derrotas += 1
 
-    def saldo_de_gols(self):
-        # Calcula o saldo de gols da equipe (gols marcados - gols sofridos).
+    def saldo_de_gols(self) -> int:
+        """
+        Retorna o saldo de gols da equipe.
+        """
         return self.gols_marcados - self.gols_sofridos
 
     def __str__(self):
-        # Retorna uma representação em string das estatísticas da equipe.
-        return f"{self.nome}: {self.pontos} pontos, {self.vitorias} vitórias, {self.gols_marcados} gols marcados, {self.gols_sofridos} gols sofridos"
+        return f"{self.nome}: {self.pontos} pts, {self.vitorias}V, {self.empates}E, {self.derrotas}D | GM {self.gols_marcados} / GS {self.gols_sofridos}"
