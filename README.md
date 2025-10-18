@@ -17,7 +17,6 @@ src/
     time.py         # Representa os times e suas estatísticas
 
 tests/
-    all_tests.py       # Suíte para executar todos os testes
     test_campeonato.py # Testes para a classe Campeonato
     test_partida.py    # Testes para a classe Partida
     test_time.py       # Testes para a classe Time
@@ -28,17 +27,22 @@ tests/
 2. Clone este repositório e navegue até a pasta do projeto.
 3. Para rodar todos os testes:
    ```bash
-   python -m unittest discover -s tests
+   pytest
    ```
 4. Para rodar um teste específico:
    ```bash
-   python -m unittest tests.test_partida
+   pytest tests/test_partida.py
    ```
 
 ## Requisitos
 - Python 3.10+
+- pytest
 
-## Melhorias Futuras
-- Persistência de dados (salvar e carregar estado do campeonato).
-- Interface gráfica para gerenciar o campeonato.
-- Automação de testes com CI/CD.
+## Membros do Grupo
+| Nome                          | Matrícula   |
+|-------------------------------|-------------|
+| Bruno C. V. de Araújo         | 221034973   |
+|                               |             |
+|                               |             |
+|                               |             |
+|                               |             |
