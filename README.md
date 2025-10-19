@@ -42,7 +42,7 @@ tests/
 | Nome                          | Matrícula   |
 |-------------------------------|-------------|
 | Bruno C. V. de Araújo         | 221034973   |
-|                               |             |
+| Rayene Ferreira Almeida       | 221022720   |
 |                               |             |
 |                               |             |
 |                               |             |
