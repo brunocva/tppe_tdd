@@ -1,25 +1,19 @@
+import pytest
 from src.time import Equipe
 
-def test_atualizar_estatisticas_vitoria():
-    equipe = Equipe("Time A")
-    equipe.atualizar_estatisticas(3, 1)
-    assert equipe.pontos == 3
-    assert equipe.vitorias == 1
-    assert equipe.gols_marcados == 3
-    assert equipe.gols_sofridos == 1
+@pytest.mark.parametrize(
+    "nome, gols_marcados, gols_sofridos, pontos_esperados, vitorias_esperadas",
+    [
+        ("Time A", 3, 1, 3, 1),  # Vitória
+        ("Time B", 2, 2, 1, 0),  # Empate
+        ("Time C", 1, 3, 0, 0),  # Derrota
+    ],
+)
+def test_atualizar_estatisticas(nome, gols_marcados, gols_sofridos, pontos_esperados, vitorias_esperadas):
+    equipe = Equipe(nome)
+    equipe.atualizar_estatisticas(gols_marcados, gols_sofridos)
 
-def test_atualizar_estatisticas_empate():
-    equipe = Equipe("Time B")
-    equipe.atualizar_estatisticas(2, 2)
-    assert equipe.pontos == 1
-    assert equipe.vitorias == 0
-    assert equipe.gols_marcados == 2
-    assert equipe.gols_sofridos == 2
-
-def test_atualizar_estatisticas_derrota():
-    equipe = Equipe("Time C")
-    equipe.atualizar_estatisticas(1, 3)
-    assert equipe.pontos == 0
-    assert equipe.vitorias == 0
-    assert equipe.gols_marcados == 1
-    assert equipe.gols_sofridos == 3
+    assert equipe.pontos == pontos_esperados
+    assert equipe.vitorias == vitorias_esperadas
+    assert equipe.gols_marcados == gols_marcados
+    assert equipe.gols_sofridos == gols_sofridos
