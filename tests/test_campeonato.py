@@ -1,4 +1,4 @@
-from src.time import Equipe
+from src.equipe import Equipe
 from src.campeonato import Campeonato
 
 def test_sortear_jogos():
