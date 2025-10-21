@@ -1,5 +1,5 @@
 import pytest
-from src.time import Equipe
+from src.equipe import Equipe
 
 @pytest.mark.parametrize(
     "nome, gols_marcados, gols_sofridos, pontos_esperados, vitorias_esperadas",

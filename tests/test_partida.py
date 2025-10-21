@@ -1,4 +1,4 @@
-from src.time import Equipe
+from src.equipe import Equipe
 from src.partida import Partida
 
 def test_processar_resultado():

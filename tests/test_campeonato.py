@@ -1,5 +1,6 @@
-from src.time import Equipe
-from src.campeonato import Campeonato
+from src.equipe import Equipe
+from src.campeonato import Campeonato 
+from src.partida import Partida
 
 def test_sortear_jogos():
     equipes = [Equipe(f"Time {i}") for i in range(4)]
@@ -48,3 +49,31 @@ def test_determinar_classificacoes():
     assert len(classificacoes["sul_americana"]) == 6
     assert len(classificacoes["rebaixados"]) == 4
 
+def test_desempate_por_numero_de_vitorias_mesmos_pontos():
+    equipes = [
+        Equipe("A"), Equipe("B"), Equipe("C"),
+        Equipe("D"), Equipe("E"), Equipe("F")
+    ]
+    camp = Campeonato(equipes)
+    camp.sortear_jogos()
+
+    # pega referências às Equipes já criadas dentro do Campeonato
+    A = next(e for e in camp.equipes if e.nome == "A")
+    B = next(e for e in camp.equipes if e.nome == "B")
+
+    # escolhe oponentes diferentes para A
+    oponentes_A = [e for e in camp.equipes if e.nome not in ("A", "B")][:2]
+
+    # A: vence primeiro, perde o segundo
+    Partida(A, oponentes_A[0], 2, 0).processar_resultado()  # vitória de A
+    Partida(A, oponentes_A[1], 0, 1).processar_resultado()  # derrota de A
+
+    # B: 3 empates contra três oponentes
+    oponentes_B = [e for e in camp.equipes if e.nome not in ("A", "B")][:3]
+    for opp in oponentes_B:
+        Partida(B, opp, 0, 0).processar_resultado()
+
+    tabela = camp.calcular_classificacao()
+    nomes = [t.nome for t in tabela]
+    assert nomes.index("A") < nomes.index("B"), \
+        "Com 3 pts cada, A (mais vitórias) deve ficar à frente de B"
