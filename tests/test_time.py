@@ -58,6 +58,16 @@ def test_saldo_de_gols_varios_jogos():
     assert time.gols_sofridos == 5
 
 
+def test_saldo_de_gols_consistente():
+    time = Equipe("Grêmio")
+    partidas = [(1, 0), (0, 2), (3, 3), (2, 1)]  # saldo: +1, -2, 0, +1 => total 0
+    for gm, gs in partidas:
+        time.atualizar_estatisticas(gm, gs)
+    assert time.saldo_de_gols() == 0
+    assert time.gols_marcados == 6
+    assert time.gols_sofridos == 6
+
+
 def test_str_formatacao():
     """Verifica se a formatação do __str__ contém informações esperadas."""
     time = Equipe("Botafogo")

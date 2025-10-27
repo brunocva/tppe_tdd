@@ -16,3 +16,25 @@ def test_processar_resultado():
     assert visitante.vitorias == 0
     assert visitante.gols_marcados == 1
     assert visitante.gols_sofridos == 2
+
+def test_empate():
+    mandante = Equipe("Mandante")
+    visitante = Equipe("Visitante")
+    partida = Partida(mandante, visitante, 1, 1)
+    partida.processar_resultado()
+
+    assert mandante.pontos == 1
+    assert visitante.pontos == 1
+    assert mandante.vitorias == 0
+    assert visitante.vitorias == 0
+
+def test_vitoria_visitante():
+    mandante = Equipe("Mandante")
+    visitante = Equipe("Visitante")
+    partida = Partida(mandante, visitante, 0, 3)
+    partida.processar_resultado()
+
+    assert mandante.pontos == 0
+    assert visitante.pontos == 3
+    assert visitante.vitorias == 1
+    assert mandante.vitorias == 0

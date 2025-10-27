@@ -19,13 +19,23 @@ class Campeonato:
     # SORTEIO / RODADAS
     # ----------------------------
     def sortear_jogos(self):
-        """
-        Gera o sorteio de todas as partidas (apenas ida, para manter compatível com teste que espera 6 jogos para 4 times),
-        e organiza em rodadas realistas: para N times, cada rodada tem N/2 jogos.
-        """
-        jogos = self._gerar_combinacoes(self.equipes)  # apenas ida (mandante, visitante)
-        random.shuffle(jogos)
-        self.rodadas = self._dividir_em_rodadas(jogos)
+        equipes = self.equipes[:]
+        if len(equipes) % 2 != 0:
+            equipes.append(None)  # Adiciona um 'bye' se for ímpar
+
+        n = len(equipes)
+        rodadas = []
+        lista = equipes[:]
+        for i in range(n - 1):
+            rodada = []
+            for j in range(n // 2):
+                time1 = lista[j]
+                time2 = lista[n - 1 - j]
+                if time1 is not None and time2 is not None:
+                    rodada.append((time1, time2))
+            lista = [lista[0]] + [lista[-1]] + lista[1:-1]
+            rodadas.append(rodada)
+        self.rodadas = rodadas
 
     def _gerar_combinacoes(self, equipes: list):
         """

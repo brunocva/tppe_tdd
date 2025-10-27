@@ -77,3 +77,66 @@ def test_desempate_por_numero_de_vitorias_mesmos_pontos():
     nomes = [t.nome for t in tabela]
     assert nomes.index("A") < nomes.index("B"), \
         "Com 3 pts cada, A (mais vitórias) deve ficar à frente de B"
+
+def test_todos_os_times_jogam_uma_vez_por_rodada():
+    equipes = [Equipe(f"Time {i}") for i in range(6)]
+    campeonato = Campeonato(equipes)
+    campeonato.sortear_jogos()
+    for rodada in campeonato.rodadas:
+        times_na_rodada = set()
+        for mandante, visitante in rodada:
+            times_na_rodada.add(mandante.nome)
+            times_na_rodada.add(visitante.nome)
+        assert len(times_na_rodada) == len(equipes), "Nem todos os times jogaram na rodada"
+
+def test_desempate_por_saldo_de_gols():
+    equipes = [Equipe("A"), Equipe("B")]
+    camp = Campeonato(equipes)
+    A, B = camp.equipes
+    # Ambos com 3 pontos, mas A tem saldo melhor
+    Partida(A, B, 2, 0).processar_resultado()  # A vence
+    Partida(B, A, 1, 0).processar_resultado()  # B vence
+    tabela = camp.calcular_classificacao()
+    assert tabela[0].nome == "A" and tabela[1].nome == "B", "A deve ficar à frente por saldo de gols"
+
+def test_desempate_por_gols_marcados():
+    equipes = [Equipe("A"), Equipe("B")]
+    camp = Campeonato(equipes)
+    A, B = camp.equipes
+    # Ambos vencem um jogo por 2x0 e perdem por 2x0, mas A faz mais gols em outro empate
+    Partida(A, B, 2, 0).processar_resultado()  # A vence
+    Partida(B, A, 2, 0).processar_resultado()  # B vence
+    Partida(A, B, 3, 3).processar_resultado()  # empate, A faz mais gols no total
+    tabela = camp.calcular_classificacao()
+    assert tabela[0].nome == "A" and tabela[1].nome == "B", "A deve ficar à frente por gols marcados"
+
+def test_confrontos_ocorrem_duas_vezes_no_maximo():
+    equipes = [Equipe(f"Time {i}") for i in range(4)]
+    campeonato = Campeonato(equipes)
+    campeonato.sortear_jogos()
+    confrontos = {}
+    for rodada in campeonato.rodadas:
+        for mandante, visitante in rodada:
+            chave = tuple(sorted([mandante.nome, visitante.nome]))
+            confrontos[chave] = confrontos.get(chave, 0) + 1
+    for qtd in confrontos.values():
+        assert qtd <= 2, "Cada confronto deve ocorrer no máximo duas vezes (turno e returno)"
+
+def gerar_rodadas(equipes):
+    """Gera rodadas no formato round-robin para número par de equipes."""
+    if len(equipes) % 2 != 0:
+        equipes.append(None)  # Adiciona um 'bye' se for ímpar
+
+    n = len(equipes)
+    rodadas = []
+    lista = equipes[:]
+    for i in range(n - 1):
+        rodada = []
+        for j in range(n // 2):
+            time1 = lista[j]
+            time2 = lista[n - 1 - j]
+            if time1 is not None and time2 is not None:
+                rodada.append((time1, time2))
+        lista = [lista[0]] + [lista[-1]] + lista[1:-1]
+        rodadas.append(rodada)
+    return rodadas

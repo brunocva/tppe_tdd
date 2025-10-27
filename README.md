@@ -33,6 +33,10 @@ tests/
    ```bash
    pytest tests/test_partida.py
    ```
+5. Para gerar um relatório de cobertura de testes:
+   ```bash
+   pytest --cov=src
+   ```
 
 ## Requisitos
 - Python 3.10+
