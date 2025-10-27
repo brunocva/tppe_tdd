@@ -111,3 +111,24 @@ def test_acumula_multiplas_partidas_misto_totais():
     assert time.saldo_de_gols() == 2
 
 
+def test_atualizar_estatisticas_nao_altera_estado_em_erro():
+    """Se lançar ValueError, o estado anterior deve permanecer intacto."""
+    time = Equipe("Vasco")
+    # Estado inicial conhecido
+    time.atualizar_estatisticas(2, 1)  # vitória
+    estado_antes = (
+        time.pontos, time.vitorias, time.empates, time.derrotas,
+        time.gols_marcados, time.gols_sofridos
+    )
+
+    # Chamada inválida
+    with pytest.raises(ValueError):
+        time.atualizar_estatisticas(-5, 0)
+
+    estado_depois = (
+        time.pontos, time.vitorias, time.empates, time.derrotas,
+        time.gols_marcados, time.gols_sofridos
+    )
+    assert estado_depois == estado_antes
+
+
