@@ -15,7 +15,7 @@ O sistema implementa funcionalidades como sorteio de jogos, cálculo de pontuaç
 src/
     campeonato.py  # Gerencia o campeonato e a classificação
     partida.py      # Representa as partidas e seus resultados
-    time.py         # Representa os times e suas estatísticas
+   equipe.py      # Representa os times/equipes e suas estatísticas (arquivo: equipe.py)
 
 tests/
     test_campeonato.py # Testes para a classe Campeonato
@@ -27,7 +27,7 @@ tests/
 1. Certifique-se de ter o Python instalado (versão 3.10 ou superior).
 2. Clone este repositório e navegue até a pasta do projeto.
 3. Para rodar todos os testes:
-   ```bash
+   ```powershell
    pytest
    ```
 4. Para rodar um teste específico:
@@ -35,13 +35,35 @@ tests/
    pytest tests/test_partida.py
    ```
 5. Para gerar um relatório de cobertura de testes:
-   ```bash
+   ```powershell
    pytest --cov=src
    ```
 
 ## Requisitos
 - Python 3.10+
 - pytest
+
+## Dependências de desenvolvimento
+Recomendo usar um ambiente virtual (venv) para instalar as dependências de desenvolvimento. Exemplo no PowerShell:
+
+```powershell
+# criar e ativar venv (Windows PowerShell)
+python -m venv .venv
+.\.venv\Scripts\Activate
+
+# instalar dependências de desenvolvimento listadas em requirements-dev.txt
+pip install -r requirements-dev.txt
+```
+
+O arquivo `requirements-dev.txt` inclui as bibliotecas usadas para teste e coverage (pytest, pytest-cov e dependências relacionadas).
+
+Após instalar, você pode rodar:
+
+```powershell
+pytest               # executa a suíte de testes
+pytest --cov=src     # executa testes com relatório de cobertura
+pytest --cov=src --cov-report=html  # gera relatório HTML em htmlcov/
+```
 
 ## Membros do Grupo
 | Nome                          | Matrícula   |

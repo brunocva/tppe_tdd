@@ -38,3 +38,28 @@ def test_vitoria_visitante():
     assert visitante.pontos == 3
     assert visitante.vitorias == 1
     assert mandante.vitorias == 0
+
+
+def test_partida_gols_negativos_levanta_value_error():
+    mand = Equipe('M')
+    vis = Equipe('V')
+    import pytest
+    with pytest.raises(ValueError):
+        Partida(mand, vis, -1, 0)
+    with pytest.raises(ValueError):
+        Partida(mand, vis, 0, -2)
+
+
+def test_partida_mesmo_time_levanta_value_error():
+    import pytest
+    t = Equipe('T')
+    with pytest.raises(ValueError):
+        Partida(t, t, 1, 0)
+
+
+def test_str_retorna_formato_esperado():
+    m = Equipe('Mandante')
+    v = Equipe('Visitante')
+    p = Partida(m, v, 2, 1)
+    s = str(p)
+    assert 'Mandante 2 x 1 Visitante' in s

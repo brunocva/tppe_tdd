@@ -39,17 +39,20 @@ class Campeonato:
 
     def _gerar_combinacoes(self, equipes: list):
         """
-        Cria todas as combinações possíveis (apenas ida).
-        Ex.: para [A,B,C,D] => (A,B), (A,C), (A,D), (B,C), (B,D), (C,D)  => 6 jogos (como no seu teste).
+        Retorna todas as combinações possíveis de confrontos (apenas ida).
+
+        Ex.: para [A, B, C, D] -> (A,B), (A,C), (A,D), (B,C), (B,D), (C,D) — 6 jogos.
         """
         return [(mandante, visitante) for mandante, visitante in combinations(equipes, 2)]
 
     def _dividir_em_rodadas(self, jogos: list):
         """
-        Divide os jogos em rodadas de forma simples e plausível:
+        Divide os jogos em rodadas de forma simples:
+
         - Em um campeonato com N times, cada rodada tem N/2 jogos (todos jogam).
-        - Se N for ímpar, o chunk usa floor(N/2).
-        Obs.: Mantemos simples para a etapa de TDD.
+        - Se N for ímpar, usa-se floor(N/2) para jogos por rodada.
+
+        Mantido simples para fins de TDD.
         """
         n_times = len(self.equipes)
         jogos_por_rodada = max(1, n_times // 2)

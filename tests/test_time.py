@@ -1,4 +1,4 @@
-# tests/test_equipe_extra.py
+# Testes adicionais para a classe Equipe (arquivo: tests/test_time.py)
 import pytest
 from src.equipe import Equipe
 
@@ -20,7 +20,7 @@ def test_atualizar_estatisticas(nome, gols_marcados, gols_sofridos, pontos_esper
     assert equipe.gols_sofridos == gols_sofridos
 
 def test_atualizar_estatisticas_gols_negativos():
-    """Deve levantar ValueError se gols forem negativos."""
+    """Levanta ValueError se gols forem negativos."""
     equipe = Equipe("Flamengo")
     with pytest.raises(ValueError):
         equipe.atualizar_estatisticas(-1, 0)

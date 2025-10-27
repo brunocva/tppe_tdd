@@ -140,3 +140,49 @@ def gerar_rodadas(equipes):
         lista = [lista[0]] + [lista[-1]] + lista[1:-1]
         rodadas.append(rodada)
     return rodadas
+
+
+def test_gerar_combinacoes_retorna_todas_as_parcerias():
+    equipes = [Equipe(f"T{i}") for i in range(4)]
+    camp = Campeonato(equipes)
+    combos = camp._gerar_combinacoes(camp.equipes)
+    # C(4,2) = 6 combinações
+    assert len(combos) == 6
+    # checa presença de uma combinação esperada
+    assert any(c[0].nome == 'T0' and c[1].nome == 'T1' for c in combos)
+
+
+def test_dividir_em_rodadas_chunck_simples():
+    equipes = [Equipe(f"T{i}") for i in range(6)]
+    camp = Campeonato(equipes)
+    jogos = list(range(6))  # objetos arbitrários representam jogos
+    rodadas = camp._dividir_em_rodadas(jogos)
+    # Para 6 equipes, jogos_por_rodada = 3
+    assert all(len(r) <= 3 for r in rodadas)
+    # Deve produzir pelo menos duas rodadas para 6 jogos com chunk=3
+    assert len(rodadas) == 2
+
+
+def test_sortear_jogos_com_numero_impar_inclui_bye_e_divide_corretamente():
+    equipes = [Equipe(f"Time {i}") for i in range(5)]
+    camp = Campeonato(equipes)
+    camp.sortear_jogos()
+
+    # Para 5 times, espera-se 5 rodadas (round-robin com bye) e 2 jogos por rodada
+    assert len(camp.rodadas) == 5
+    for rodada in camp.rodadas:
+        # cada rodada deve conter exatamente 2 jogos (um time em bye)
+        assert len(rodada) == 2
+
+
+def test_exibir_classificacao_imprime_formato(capsys):
+    a = Equipe('A')
+    b = Equipe('B')
+    a.pontos = 3
+    b.pontos = 0
+    camp = Campeonato([a, b])
+    camp.exibir_classificacao()
+    out = capsys.readouterr().out
+    assert 'CLASSIFICAÇÃO' in out
+    assert 'A' in out
+    assert 'B' in out
