@@ -132,3 +132,18 @@ def test_atualizar_estatisticas_nao_altera_estado_em_erro():
     assert estado_depois == estado_antes
 
 
+def test_str_apos_varias_partidas_reflete_estatisticas():
+    time = Equipe("Internacional")
+    sequencia = [(4, 0), (1, 2), (2, 2)]  # V, D, E => pontos 4
+    for gm, gs in sequencia:
+        time.atualizar_estatisticas(gm, gs)
+
+    texto = str(time)
+    # Checa presença dos campos principais no __str__
+    assert "Internacional" in texto
+    assert "4 pts" in texto
+    assert "1V" in texto
+    assert "1E" in texto
+    assert "1D" in texto
+    assert "GM 7" in texto   # 4+1+2
+    assert "GS 4" in texto   # 0+2+2
