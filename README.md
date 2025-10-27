@@ -41,8 +41,9 @@ tests/
 ## Membros do Grupo
 | Nome                          | Matrícula   |
 |-------------------------------|-------------|
+| Amanda Gonçalves S. Abreu     | 211030925   |
+| Arthur Rodrigues Sousa        | 211030291   |
 | Bruno C. V. de Araújo         | 221034973   |
+| Renata Quadros Kurzawa        | 211063013   |
 | Rayene Ferreira Almeida       | 221022720   |
-| Amanda Gonçalves S.Abreu      | 211030925   |
-|                               |             |
-|                               |             |
+
