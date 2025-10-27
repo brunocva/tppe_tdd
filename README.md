@@ -1,6 +1,5 @@
 #  Simulador do Campeonato Brasileiro, série - A
 
-## Descrição
 Este projeto é um simulador do Campeonato Brasileiro Série A de 2025, desenvolvido como parte do trabalho prático da disciplina **FGA0242 - Técnicas de Programação em Plataformas Emergentes (TPPE)**, turma T01 (2025.2), da Universidade de Brasília (UnB/FCTE).
 
 O sistema implementa funcionalidades como sorteio de jogos, cálculo de pontuação, classificação e critérios de desempate, seguindo o sistema de pontos corridos do futebol brasileiro.
