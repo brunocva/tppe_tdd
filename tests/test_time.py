@@ -92,3 +92,22 @@ def test_derrota_nao_soma_pontos():
     assert time.gols_marcados == 0
     assert time.gols_sofridos == 2
 
+def test_acumula_multiplas_partidas_misto_totais():
+    """
+    2 vitórias (2x0, 3x1), 1 empate (1x1), 1 derrota (0x2)
+    Pontos: 3+3+1+0 = 7
+    """
+    time = Equipe("Athletico-PR")
+    partidas = [(2, 0), (1, 1), (0, 2), (3, 1)]
+    for gm, gs in partidas:
+        time.atualizar_estatisticas(gm, gs)
+
+    assert time.pontos == 7
+    assert time.vitorias == 2
+    assert time.empates == 1
+    assert time.derrotas == 1
+    assert time.gols_marcados == 6  # 2+1+0+3
+    assert time.gols_sofridos == 4  # 0+1+2+1
+    assert time.saldo_de_gols() == 2
+
+
