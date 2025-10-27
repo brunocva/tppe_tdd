@@ -5,8 +5,6 @@ Este projeto é um simulador do Campeonato Brasileiro Série A de 2025, desenvol
 O sistema implementa funcionalidades como sorteio de jogos, cálculo de pontuação, classificação e critérios de desempate, seguindo o sistema de pontos corridos do futebol brasileiro.
 
 ## Funcionalidades
-
-## Funcionalidades
 - Sorteio de jogos para todas as rodadas, garantindo que não existam jogos repetidos.
 - Cálculo de pontuação, vitórias, gols marcados, gols sofridos e saldo de gols.
 - Aplicação de critérios de desempate (número de vitórias, saldo de gols, etc.).
