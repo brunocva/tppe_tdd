@@ -80,3 +80,15 @@ def test_str_formatacao():
     assert "0D" in texto
     assert "GM 2" in texto
     assert "GS 0" in texto
+
+
+def test_derrota_nao_soma_pontos():
+    time = Equipe("Santos")
+    time.atualizar_estatisticas(0, 2)  # derrota
+    assert time.pontos == 0
+    assert time.vitorias == 0
+    assert time.empates == 0
+    assert time.derrotas == 1
+    assert time.gols_marcados == 0
+    assert time.gols_sofridos == 2
+
