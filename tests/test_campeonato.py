@@ -9,7 +9,7 @@ def test_sortear_jogos():
 
     # Soma o total de jogos em todas as rodadas
     total_jogos = sum(len(rodada) for rodada in campeonato.rodadas)
-    assert total_jogos == 6  # 4 equipes => 6 combinações (C(4,2))
+    assert total_jogos == 12  # 4 equipes => ida+volta (6 combinacoes * 2)
 
 
 def test_calcular_classificacao():
@@ -168,8 +168,8 @@ def test_sortear_jogos_com_numero_impar_inclui_bye_e_divide_corretamente():
     camp = Campeonato(equipes)
     camp.sortear_jogos()
 
-    # Para 5 times, espera-se 5 rodadas (round-robin com bye) e 2 jogos por rodada
-    assert len(camp.rodadas) == 5
+    # Para 5 times, espera-se 10 rodadas (ida+volta com bye) e 2 jogos por rodada
+    assert len(camp.rodadas) == 10
     for rodada in camp.rodadas:
         # cada rodada deve conter exatamente 2 jogos (um time em bye)
         assert len(rodada) == 2

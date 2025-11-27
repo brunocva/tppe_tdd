@@ -2,6 +2,30 @@ import random
 from itertools import combinations
 from typing import List, Tuple
 
+
+class CombGenerator:
+    """Gera combinações de confrontos (apenas ida).
+
+    Exemplo de aplicação da refatoração 'Substituir método por objeto-método'.
+    """
+
+    def generate(self, equipes: list):
+        return [(mandante, visitante) for mandante, visitante in combinations(equipes, 2)]
+
+
+class ClassificacaoPrinter:
+    """Classe responsável pela impressão da tabela de classificação.
+
+    Extraída do método privado para separar responsabilidade (Extract Class).
+    """
+
+    @staticmethod
+    def imprimir(classificacao):
+        print("\n===== CLASSIFICAÇÃO =====")
+        print(f"{'Pos':<4}{'Time':<20}{'Pts':<5}{'Vit':<5}{'SG':<5}{'GM':<5}{'GS':<5}")
+        for i, e in enumerate(classificacao, start=1):
+            print(f"{i:<4}{e.nome:<20}{e.pontos:<5}{e.vitorias:<5}{e.saldo_de_gols():<5}{e.gols_marcados:<5}{e.gols_sofridos:<5}")
+
 class Campeonato:
     """
     Gerencia o campeonato: sorteio de jogos (organizados em rodadas),
@@ -19,31 +43,62 @@ class Campeonato:
     # SORTEIO / RODADAS
 
     def sortear_jogos(self):
-        # Implementa o algoritmo de round-robin (método de rotação).
-        # - Se o número de equipes for ímpar, adicionamos um `None` que representa um "bye" (rodada de folga).
-        # - A lista é rotacionada a cada iteração para gerar as partidas de cada rodada.
-        equipes = self.equipes[:]
-        if len(equipes) % 2 != 0:
-            equipes.append(None)  # adiciona um 'bye' quando há número ímpar de equipes
+        """
+        Gera o calendário em turno e returno (round-robin duplo).
 
-        n = len(equipes)
+        - Para N equipes (ajustado com bye se N for ímpar), gera N-1 rodadas na ida.
+        - O returno repete os confrontos invertendo mandante/visitante.
+        """
+        equipes = self._preparar_lista_com_bye()
+        rodadas_ida = self._gerar_round_robin(equipes)
+        rodadas_volta = self._inverter_mandos(rodadas_ida)
+        self.rodadas = rodadas_ida + rodadas_volta
+
+    def _preparar_lista_com_bye(self):
+        """
+        Garante número par de equipes, adicionando um bye (None) quando necessário.
+        """
+        lista = self.equipes[:]
+        if len(lista) % 2 != 0:
+            lista.append(None)
+        return lista
+
+    def _gerar_round_robin(self, equipes):
+        """Gera as rodadas de uma perna (ida) usando o algoritmo round-robin."""
         rodadas = []
-        lista = equipes[:]
-        for i in range(n - 1):
-            rodada = []
-            # Emparelha elementos da lista: primeiro com o último, segundo com o penúltimo, etc.
-            for j in range(n // 2):
-                time1 = lista[j]
-                time2 = lista[n - 1 - j]
-                # pula partidas que envolvem o 'bye' (None)
-                if time1 is not None and time2 is not None:
-                    rodada.append((time1, time2))
-            # rota a lista mantendo o primeiro elemento fixo (padrão do algoritmo)
-            lista = [lista[0]] + [lista[-1]] + lista[1:-1]
-            rodadas.append(rodada)
+        lista_rotativa = equipes[:]
+        total_rodadas = len(lista_rotativa) - 1
+        for _ in range(total_rodadas):
+            rodadas.append(self._gerar_rodada(lista_rotativa))
+            lista_rotativa = self._rotacionar_equipes(lista_rotativa)
+        return rodadas
 
-        # Atualiza o estado do campeonato com as rodadas geradas
-        self.rodadas = rodadas
+    def _gerar_rodada(self, lista):
+        """
+        Cria uma rodada a partir do arranjo atual de equipes.
+        """
+        rodada = []
+        n = len(lista)
+        for indice in range(n // 2):
+            mandante = lista[indice]
+            visitante = lista[n - 1 - indice]
+            if mandante is not None and visitante is not None:
+                rodada.append((mandante, visitante))
+        return rodada
+
+    def _rotacionar_equipes(self, lista):
+        """
+        Roda a lista mantendo o primeiro elemento fixo (algoritmo round-robin).
+        """
+        return [lista[0]] + [lista[-1]] + lista[1:-1]
+
+    def _inverter_mandos(self, rodadas):
+        """Cria o returno invertendo mandante/visitante de cada jogo."""
+        rodadas_invertidas = []
+        for rodada in rodadas:
+            rodada_volta = [(vis, man) for man, vis in rodada]
+            rodadas_invertidas.append(rodada_volta)
+        return rodadas_invertidas
 
     def _gerar_combinacoes(self, equipes: list):
         """
@@ -52,7 +107,10 @@ class Campeonato:
         Recebe uma lista de equipes (objetos) e retorna pares (mandante, visitante).
         Exemplo: para [A, B, C, D] retorna 6 combinações distintas.
         """
-        return [(mandante, visitante) for mandante, visitante in combinations(equipes, 2)]
+        # Substitui a implementação direta por um objeto gerador para
+        # demonstrar a refatoração "Substituir método por objeto-método".
+        gen = CombGenerator()
+        return gen.generate(equipes)
 
     def _dividir_em_rodadas(self, jogos: list):
         """
@@ -99,12 +157,8 @@ class Campeonato:
         self._imprimir_classificacao(classificacao)
 
     def _imprimir_classificacao(self, classificacao):
-        # Impressão simples da tabela: posição, nome e principais estatísticas.
-        print("\n===== CLASSIFICAÇÃO =====")
-        print(f"{'Pos':<4}{'Time':<20}{'Pts':<5}{'Vit':<5}{'SG':<5}{'GM':<5}{'GS':<5}")
-        for i, e in enumerate(classificacao, start=1):
-            # cada linha mostra posição, nome, pontos, vitórias, saldo, gols marcados e sofridos
-            print(f"{i:<4}{e.nome:<20}{e.pontos:<5}{e.vitorias:<5}{e.saldo_de_gols():<5}{e.gols_marcados:<5}{e.gols_sofridos:<5}")
+        # Delegar impressão a ClassificacaoPrinter (Extract Class)
+        ClassificacaoPrinter.imprimir(classificacao)
 
 
     # COMPETIÇÕES / REBAIXAMENTO
