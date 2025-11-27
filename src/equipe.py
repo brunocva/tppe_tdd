@@ -11,6 +11,8 @@ class EstatisticasEquipe:
         self.derrotas = 0
         self.gols_marcados = 0
         self.gols_sofridos = 0
+        self.cartoes_vermelhos = 0
+        self.cartoes_amarelos = 0
 
     def registrar_gols(self, gols_marcados: int, gols_sofridos: int):
         self.gols_marcados += gols_marcados
@@ -26,6 +28,13 @@ class EstatisticasEquipe:
 
     def registrar_derrota(self):
         self.derrotas += 1
+
+    def registrar_cartoes(self, vermelhos: int = 0, amarelos: int = 0):
+        """Registra cartões recebidos na partida."""
+        if vermelhos < 0 or amarelos < 0:
+            raise ValueError("Quantidade de cartões não pode ser negativa.")
+        self.cartoes_vermelhos += vermelhos
+        self.cartoes_amarelos += amarelos
 
     def saldo_de_gols(self) -> int:
         return self.gols_marcados - self.gols_sofridos
@@ -126,6 +135,22 @@ class Equipe:
     @gols_sofridos.setter
     def gols_sofridos(self, valor):
         self.estatisticas.gols_sofridos = valor
+
+    @property
+    def cartoes_vermelhos(self):
+        return self.estatisticas.cartoes_vermelhos
+
+    @cartoes_vermelhos.setter
+    def cartoes_vermelhos(self, valor):
+        self.estatisticas.cartoes_vermelhos = valor
+
+    @property
+    def cartoes_amarelos(self):
+        return self.estatisticas.cartoes_amarelos
+
+    @cartoes_amarelos.setter
+    def cartoes_amarelos(self, valor):
+        self.estatisticas.cartoes_amarelos = valor
 
     def saldo_de_gols(self) -> int:
         """

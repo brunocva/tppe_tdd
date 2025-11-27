@@ -8,10 +8,16 @@ facilitar futuras mudanças. Tudo foi testado e a suíte permanece verde.
 O que foi alterado
 
 - `src/campeonato.py`
-  - Nova classe `ClassificacaoPrinter` para imprimir a tabela (separação de apresentação).
-  - Novo objeto `CombGenerator` para gerar combinações de confrontos.
-  - `sortear_jogos` continua gerando as rodadas; partes do algoritmo estão separadas em
-    métodos auxiliares para melhorar a leitura.
+  - Sorteio agora embaralha a ordem inicial e gera turno + returno.
+  - Registro de confrontos para desempate por confronto direto (quando apenas 2 clubes empatam).
+  - Critérios completos de desempate: pontos, vitórias, saldo, gols pró, confronto direto, menos vermelhos, menos amarelos e sorteio final.
+  - `ClassificacaoPrinter` (Extract Class) e `CombGenerator` (Substituir Método por Objeto-Método) mantidos.
+- `src/equipe.py`
+  - Estatísticas passam a guardar cartões vermelhos e amarelos (para desempate).
+  - Objeto-método `AtualizacaoEstatisticas` mantido.
+- `tests/all_tests.py`
+  - Agora executa a suíte via `pytest` diretamente.
+- Novos testes em `tests/test_campeonato.py` cobrindo confronto direto e desempate por cartões.
 
 Por que fizemos isso
 

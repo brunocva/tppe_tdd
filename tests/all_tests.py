@@ -1,7 +1,4 @@
-import unittest
-from tests.test_time import TestEquipe
-from tests.test_partida import TestPartida
-from tests.test_campeonato import TestCampeonato
+import pytest
 
 if __name__ == "__main__":
-    unittest.main()
+    raise SystemExit(pytest.main())

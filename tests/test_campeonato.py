@@ -186,3 +186,39 @@ def test_exibir_classificacao_imprime_formato(capsys):
     assert 'CLASSIFICAÇÃO' in out
     assert 'A' in out
     assert 'B' in out
+
+
+def test_desempate_confronto_direto_para_dois_times():
+    a = Equipe('A')
+    b = Equipe('B')
+    camp = Campeonato([a, b])
+    for t in (a, b):
+        t.pontos = 3
+        t.vitorias = 1
+        t.gols_marcados = 2
+        t.gols_sofridos = 1
+    camp.registrar_confronto(a, b, 1, 0)
+    tabela = camp.calcular_classificacao()
+    assert tabela[0].nome == 'A' and tabela[1].nome == 'B'
+
+
+def test_desempate_por_cartoes_e_sorteio_final():
+    a = Equipe('A')
+    b = Equipe('B')
+    c = Equipe('C')
+    camp = Campeonato([a, b, c])
+    for t in (a, b, c):
+        t.pontos = 3
+        t.vitorias = 1
+        t.gols_marcados = 2
+        t.gols_sofridos = 1
+    a.cartoes_vermelhos = 1
+    a.cartoes_amarelos = 2
+    b.cartoes_vermelhos = 0
+    b.cartoes_amarelos = 3
+    c.cartoes_vermelhos = 0
+    c.cartoes_amarelos = 1
+    tabela = camp.calcular_classificacao()
+    assert tabela[0].nome == 'C'
+    assert tabela[1].nome == 'B'
+
