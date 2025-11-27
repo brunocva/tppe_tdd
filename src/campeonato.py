@@ -252,7 +252,19 @@ class Campeonato:
         return (pontos, saldo, gols_pro)
 
     def _ordenar_por_cartoes(self, grupo):
-        """Desempata por menos vermelhos, depois menos amarelos; mantém ordem se ainda empatar."""
+        """Desempata por menos vermelhos, depois menos amarelos; sorteia se ainda empatar (seed fixa para reprodutibilidade)."""
         grupo_ordenado = sorted(grupo, key=lambda t: (t.cartoes_vermelhos, t.cartoes_amarelos))
-        # Em caso de empate também em cartões, preserva a ordem atual (determinismo para testes).
-        return grupo_ordenado
+        i = 0
+        resultado = []
+        rng = random.Random(0)  # sorteio reproduzível
+        while i < len(grupo_ordenado):
+            subgrupo = [grupo_ordenado[i]]
+            chave = (grupo_ordenado[i].cartoes_vermelhos, grupo_ordenado[i].cartoes_amarelos)
+            i += 1
+            while i < len(grupo_ordenado) and (grupo_ordenado[i].cartoes_vermelhos, grupo_ordenado[i].cartoes_amarelos) == chave:
+                subgrupo.append(grupo_ordenado[i])
+                i += 1
+            if len(subgrupo) > 1:
+                rng.shuffle(subgrupo)  # sorteio na CBF
+            resultado.extend(subgrupo)
+        return resultado

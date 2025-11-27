@@ -10,7 +10,7 @@ O que foi alterado
 - `src/campeonato.py`
   - Sorteio agora embaralha a ordem inicial e gera turno + returno.
   - Registro de confrontos para desempate por confronto direto (quando apenas 2 clubes empatam).
-  - Critérios completos de desempate: pontos, vitórias, saldo, gols pró, confronto direto, menos vermelhos, menos amarelos e sorteio final.
+  - Critérios completos de desempate: pontos, vitórias, saldo, gols pró, confronto direto, menos vermelhos, menos amarelos e sorteio final (seed fixa para reprodutibilidade).
   - `ClassificacaoPrinter` (Extract Class) e `CombGenerator` (Substituir Método por Objeto-Método) mantidos.
 - `src/equipe.py`
   - Estatísticas passam a guardar cartões vermelhos e amarelos (para desempate).
